@@ -1,32 +1,39 @@
-import React from 'react';
-import { connect } from 'react-redux';
+import React from 'react'
+import { connect } from 'react-redux'
 
-import { addComment } from 'actions';
+import { addComment, fetchComments } from 'actions'
 
 class CommentBox extends React.Component {
-  state = { value: '' };
+  state = { value: '' }
   handleChange = e => {
-    this.setState({ value: e.target.value });
-  };
+    this.setState({ value: e.target.value })
+  }
 
   handleSubmit = e => {
-    e.preventDefault();
-    this.props.addComment(this.state.value);
-    this.setState({ value: '' });
-  };
+    e.preventDefault()
+    if (this.state.value.trim()) {
+      this.props.addComment(this.state.value)
+      this.setState({ value: '' })
+    }
+  }
 
   render() {
     return (
-      <form onSubmit={this.handleSubmit}>
-        <h4>Write a comment!</h4>
-        <textarea onChange={this.handleChange} value={this.state.value} />
-        <button>Submit</button>
-      </form>
-    );
+      <React.Fragment>
+        <form onSubmit={this.handleSubmit}>
+          <h4>Write a comment!</h4>
+          <textarea onChange={this.handleChange} value={this.state.value} />
+          <button>Submit</button>
+        </form>
+        <button className="fetch-comments" onClick={this.props.fetchComments}>
+          Fetch comments
+        </button>
+      </React.Fragment>
+    )
   }
 }
 
 export default connect(
   null,
-  { addComment }
-)(CommentBox);
+  { addComment, fetchComments }
+)(CommentBox)
